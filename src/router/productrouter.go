@@ -18,5 +18,7 @@ func (router *ProductsRouter) RegisterRouters(routers *http.ServeMux) *http.Serv
 	routers.HandleFunc(fmt.Sprintf("%s /products", http.MethodGet), router.productController.GetAllProducts)
 	routers.HandleFunc(fmt.Sprintf("%s /products/{id}", http.MethodGet), router.productController.GetByIdProduct)
 	routers.HandleFunc(fmt.Sprintf("%s /products", http.MethodPost), router.productController.CreateProduct)
+	routers.HandleFunc(fmt.Sprintf("%s /products/{id}", http.MethodDelete), router.productController.DeleteProduct)
+	routers.HandleFunc(fmt.Sprintf("%s /products/{id}", http.MethodPut), router.productController.UpdateProduct)
 	return routers
 }

@@ -49,13 +49,13 @@ func (productoRepositoryMemory *ProductoRepositoryMemory) GetById(id int) (entit
 }
 
 // Update implements repository.ProductoRepository.
-func (productoRepositoryMemory *ProductoRepositoryMemory) Update(id int, p entity.Product) (entity.Product, error) {
+func (productoRepositoryMemory *ProductoRepositoryMemory) Update(id int, product entity.Product) (entity.Product, error) {
 	_, err := productoRepositoryMemory.GetById(id)
 	if err != nil {
 		return entity.Product{}, err
 	}
-	productoRepositoryMemory.productsMap[id] = p
-	return p, nil
+	productoRepositoryMemory.productsMap[id] = product
+	return product, nil
 }
 
 func New(products map[int]entity.Product) repository.ProductoRepository {
