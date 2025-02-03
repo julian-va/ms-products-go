@@ -8,11 +8,24 @@ import (
 
 func RunServer(port string, dependencies *ResolveDependencies) {
 	routers := http.NewServeMux()
-
 	routers = dependencies.ProductsRouter.RegisterRouters(routers)
+	routers = dependencies.PingRouter.RegisterRouters(routers)
+	requestLoggerMiddleware(routers)
+
+	serve := http.Server{
+		Addr:    port,
+		Handler: requestLoggerMiddleware(routers),
+	}
 	fmt.Printf("Run server http://localhost%s", port)
 
-	if err := http.ListenAndServe(port, routers); err != nil {
+	if err := serve.ListenAndServe(); err != nil {
 		log.Fatal("Faild to start http server")
+	}
+}
+
+func requestLoggerMiddleware(next http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("method %s, path: %s", r.Method, r.URL.Path)
+		next.ServeHTTP(w, r)
 	}
 }

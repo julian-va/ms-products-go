@@ -1,0 +1,23 @@
+# Ignorar archivos de Go que no son necesarios
+*.test
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Ignorar archivos de dependencias y caché
+vendor/
+node_modules/
+.vscode/
+k8
+
+# Archivos de compilación y binarios locales
+*.out
+*.log
+
+# Archivos y directorios del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración locales
+.env
