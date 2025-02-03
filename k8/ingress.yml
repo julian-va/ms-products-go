@@ -1,12 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ms-products-ingress-service
-  labels:
-    name: ms-products-ingress-service
+  name: ms-products-ingress
 spec:
+  ingressClassName: nginx
   rules:
-    - host: localhost
+    - host: jva-cloud.org
       http:
         paths:
           - pathType: Prefix
@@ -15,4 +14,4 @@ spec:
               service:
                 name: ms-products-service
                 port:
-                  number: 8080
+                  number: 9090
