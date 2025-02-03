@@ -20,6 +20,8 @@ type ResolveDependencies struct {
 	productService     service.ProductoService
 	productController  controller.ProductController
 	ProductsRouter     router.ProductsRouter
+	pingController     controller.PingController
+	PingRouter         router.PingRouter
 }
 
 func NewResolveDependencies() *ResolveDependencies {
@@ -29,6 +31,8 @@ func NewResolveDependencies() *ResolveDependencies {
 	dependencies.productService = createproductService(dependencies.productRepository)
 	dependencies.productController = createproductController(dependencies.productService)
 	dependencies.ProductsRouter = createProductsRouter(dependencies.productController)
+	dependencies.pingController = createPingController()
+	dependencies.PingRouter = createPingRouter(dependencies.pingController)
 	return dependencies
 }
 
@@ -57,4 +61,12 @@ func createproductController(productService service.ProductoService) controller.
 
 func createProductsRouter(productController controller.ProductController) router.ProductsRouter {
 	return *router.NewProductsRouter(productController)
+}
+
+func createPingController() controller.PingController {
+	return *controller.NewPingController()
+}
+
+func createPingRouter(pingController controller.PingController) router.PingRouter {
+	return *router.NewPingRouter(pingController)
 }
