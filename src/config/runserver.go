@@ -25,7 +25,7 @@ func RunServer(port string, dependencies *ResolveDependencies) {
 
 func requestLoggerMiddleware(next http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("method %s, path: %s", r.Method, r.URL.Path)
+		log.Printf("Header %s, method %s, path: %s, body: %s\n", r.Header, r.Method, r.URL.Path, r.Body)
 		next.ServeHTTP(w, r)
 	}
 }

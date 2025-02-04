@@ -50,12 +50,16 @@ func (productoRepositoryMemory *ProductoRepositoryMemory) GetById(id int) (entit
 
 // Update implements repository.ProductoRepository.
 func (productoRepositoryMemory *ProductoRepositoryMemory) Update(id int, product entity.Product) (entity.Product, error) {
-	_, err := productoRepositoryMemory.GetById(id)
+	productToUpdate, err := productoRepositoryMemory.GetById(id)
 	if err != nil {
 		return entity.Product{}, err
 	}
-	productoRepositoryMemory.productsMap[id] = product
-	return product, nil
+	productToUpdate.Descripcion = validateValueStr(product.Descripcion, productToUpdate.Descripcion)
+	productToUpdate.Nombre = validateValueStr(product.Nombre, productToUpdate.Nombre)
+	productToUpdate.Precio = validateValueint(product.Precio, productToUpdate.Precio)
+	productToUpdate.Stock = validateValueint(product.Stock, productToUpdate.Stock)
+	productoRepositoryMemory.productsMap[id] = productToUpdate
+	return productToUpdate, nil
 }
 
 func New(products map[int]entity.Product) repository.ProductoRepository {
@@ -92,4 +96,20 @@ func lastIdCreated(products map[int]entity.Product) int {
 	}
 	id++
 	return id
+}
+
+func validateValueStr(newValue string, oldValue string) string {
+	if newValue == "" {
+		return oldValue
+	} else {
+		return newValue
+	}
+}
+
+func validateValueint(newValue int64, oldValue int64) int64 {
+	if newValue == 0 {
+		return oldValue
+	} else {
+		return newValue
+	}
 }

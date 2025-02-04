@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ms-products-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ms-products-app
@@ -27,8 +27,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /ping
+            tcpSocket:
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
