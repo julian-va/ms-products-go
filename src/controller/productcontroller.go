@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"ms-products/src/entity"
 	"ms-products/src/service"
@@ -30,8 +29,7 @@ func (controller *ProductController) GetAllProducts(w http.ResponseWriter, req *
 		utils.CreateResponse(w, products, http.StatusOK)
 		return
 	}
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprintf(w, "no hay productos")
+	utils.CreateResponse(w, nil, http.StatusNotFound)
 }
 
 func (controller *ProductController) GetByIdProduct(w http.ResponseWriter, req *http.Request) {
@@ -42,9 +40,8 @@ func (controller *ProductController) GetByIdProduct(w http.ResponseWriter, req *
 		return
 	}
 	product, err := controller.productService.GetById(idTosearch)
-	if product.Id == 0 {
-		fmt.Print(err.Error())
-		http.Error(w, err.Error(), http.StatusNoContent)
+	if err != nil {
+		utils.CreateResponse(w, nil, http.StatusNoContent)
 		return
 	}
 	utils.CreateResponse(w, product, http.StatusOK)
