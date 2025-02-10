@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: ms-products-container
-          image: ms-products
-          imagePullPolicy: Never
+          image: papachex/ms-products-go:v1
+          imagePullPolicy: Always
           resources:
             limits:
               memory: "256Mi"
@@ -28,7 +28,8 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /ping
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
