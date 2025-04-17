@@ -84,16 +84,19 @@ func initialData(products map[int]entity.Product) map[int]entity.Product {
 
 func lastIdCreated(products map[int]entity.Product) int {
 	keys := make([]int, 0, len(products))
+	var id int
 
 	for k := range products {
 		keys = append(keys, k)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(keys)))
-	id := keys[0]
-	if id != 0 {
+
+	if len(keys) > 0 {
+		id = keys[0]
 		id++
 		return id
 	}
+
 	id++
 	return id
 }

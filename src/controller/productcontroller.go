@@ -8,6 +8,7 @@ import (
 	"ms-products/src/utils"
 	"net/http"
 	"strconv"
+	"sync"
 )
 
 type ProductController struct {
@@ -19,17 +20,25 @@ func NewProductController(productService service.ProductoService) *ProductContro
 		productService: productService,
 	}
 }
+
 func (controller *ProductController) GetAllProducts(w http.ResponseWriter, req *http.Request) {
-	products, err := controller.productService.GetAll()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	if len(products) > 0 {
-		utils.CreateResponse(w, products, http.StatusOK)
-		return
-	}
-	utils.CreateResponse(w, nil, http.StatusNotFound)
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		products, err := controller.productService.GetAll()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if len(products) > 0 {
+			utils.CreateResponse(w, products, http.StatusOK)
+			return
+		}
+		utils.CreateResponse(w, nil, http.StatusNotFound)
+	}()
+	wg.Wait()
 }
 
 func (controller *ProductController) GetByIdProduct(w http.ResponseWriter, req *http.Request) {
